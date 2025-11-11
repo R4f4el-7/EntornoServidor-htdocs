@@ -1,0 +1,48 @@
+section {
+    width: 80%;
+    float: left;
+}
+
+header {
+    padding: 25px;
+    background-color: #72ac31;
+}
+
+header img
+{
+    height: 30px;
+    width: 30px;
+}
+
+footer {
+    display: flex;
+    padding: 10px 5px;
+    background-color: #45a1ff;
+    color: #fff;
+    float:none;
+    position: absolute;
+    top:500px;
+    width: 100%;
+}
+
+footer p {
+    flex: 1;
+    margin: 0;
+}
+
+footer ul {
+    flex: 1;
+    display: flex;
+    justify-content: space-around;
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+.contenedor {
+    width: 100%;
+    display: flex;
+}
+.contenedor p {
+    color: rgb(255, 0, 255);
+}

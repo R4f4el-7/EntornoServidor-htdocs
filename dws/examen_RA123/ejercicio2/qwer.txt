@@ -1,0 +1,4 @@
+Nombre: qwer|Email: qwewqeqwe|Clave: 123456
+Fecha: 0002-08-06|genero: hombre
+pais: co
+biografia: bla bal

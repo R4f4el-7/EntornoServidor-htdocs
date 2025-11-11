@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<empleados xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="departamento.xsd">
+  <empleado>
+    <nombre>Juan Pérez</nombre>
+    <puesto>Desarrollador</puesto>
+    <salario>2500</salario>
+  </empleado>
+  <empleado>
+    <nombre>María López</nombre>
+    <puesto>Diseñadora</puesto>
+    <salario>2300</salario>
+  </empleado>
+</empleados>

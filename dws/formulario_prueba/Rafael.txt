@@ -1,0 +1,6 @@
+Nombre: Rafael
+Dirección: 1234 av Dino
+Teléfono: 67890123
+Experiencia 1: primera
+Experiencia 2: segunda
+Habilidades: Software
