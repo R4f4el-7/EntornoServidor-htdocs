@@ -6,24 +6,30 @@ $apellido = "";
 
 if(isset($_POST["consulta"])){
     $id = $_POST["id"];
-
-    //Escapar para seguridad
-    $id = mysqli_real_escape_string($conexion, $id);
-
-    //Consulta
-    $resultado = mysqli_query($conexion, "SELECT nombre, apellido FROM persona WHERE id = '$id';");
-
-    if(!$resultado){
-        die("Error al consultar: " . mysqli_error($conexion));
+    //Validar ID
+    if(!is_numeric($id) || $id <= 0){
+        die("ID inválido");
     }
+    //Consulta
+    try {
+        $sql = "SELECT nombre, apellido FROM persona WHERE id = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute([$id]);
 
-    //Verificar si hay resultados
-    if(mysqli_num_rows($resultado) > 0){
-        $fila = mysqli_fetch_assoc($resultado);
-        $nombre = $fila['nombre'];
-        $apellido = $fila['apellido'];
-    } else {
-        echo "No se encontró ninguna persona con ese ID.<br>";
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if($usuario){
+            $nombre = $usuario["nombre"];
+            $apellido = $usuario["apellido"];
+
+            echo "Nombre: ".$nombre."<br>";
+            echo "Apellido ".$apellido."<br>";
+        } else {
+            echo "No se encontró ninguna persona con ese ID";
+        }
+
+    } catch (PDOException $e) {
+        die("No se puede consultar la tabla: " . $e->getMessage());
     }
 }
 ?>
@@ -38,15 +44,9 @@ if(isset($_POST["consulta"])){
     <form action="consulta.php" method="post">  
         <h2>Consulta</h2>
         Id:<br>
-        <input type="text" name="id" value="<?php echo isset($_POST['id']) ? htmlspecialchars($_POST['id']) : ''; ?>"><br>  
+        <input type="text" name="id"><br>  
         <input type="submit" name="consulta" value="Consulta">
     </form>
-
-    <?php if($nombre || $apellido): ?>
-        <h3>Resultados:</h3>
-        Nombre: <?php echo htmlspecialchars($nombre); ?><br>
-        Apellido: <?php echo htmlspecialchars($apellido); ?><br>
-    <?php endif; ?>
 
     <a href="index.php">Volver al menú</a>
 </body>

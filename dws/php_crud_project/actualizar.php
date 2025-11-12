@@ -1,20 +1,29 @@
 <?php 
-    require "db.php";
+require "db.php";
     
-    if(isset($_POST["actualizar"])){
+if(isset($_POST["actualizar"])){
     $id = $_POST["id"];
-    $nombre = mysqli_real_escape_string($conexion, $_POST["nombre"]);
-    $apellido = mysqli_real_escape_string($conexion, $_POST["apellido"]);
-
-    /*Actualizar*/
-    $actualiza = "UPDATE persona SET nombre = '$nombre', apellido = '$apellido' WHERE id = $id;";
-
-    if (!mysqli_query($conexion, $actualiza)) {
-        die(printf("No se puede actualizar la base de datos: [%d] %s", mysqli_connect_errno(), mysqli_connect_error())); 
+    $nombre = $_POST["nombre"];
+    $apellido = $_POST["apellido"];
+    //Validar ID
+    if(!is_numeric($id) || $id <= 0){
+        die("ID inválido");
     }
+    /*Actualizar*/
+    try {
+        $sql = "UPDATE persona SET nombre = ?, apellido = ? WHERE id = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute([$nombre, $apellido, $id]);
 
-    $cantidad = mysqli_affected_rows($conexion);
-    printf("Se han actualizado " . $cantidad . " conjuntos de datos<BR />");
+        //Número de registros afectados
+        if($stmt->rowCount() > 0){
+            echo "Se han actualizado " . $stmt->rowCount() . " registros";
+        } else {
+            echo "No se encontró ninguna persona con ese ID o no hubo cambios";
+        }
+    } catch (PDOException $e) {
+        die("No se puede actualizar la base de datos: " . $e->getMessage());
+    }
 }
 ?>
 <!DOCTYPE html>

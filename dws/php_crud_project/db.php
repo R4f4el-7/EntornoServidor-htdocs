@@ -1,40 +1,49 @@
 <?php 
 $server = "localhost";
 $user = "root";
-$pass = "";
-$db = "practica_cosquillo";
+$password = "";
+$db = "base_persona";
 $table = "persona";
+//Se conecta solo al servidor MySQL (mysql:host=$server), sin usar dbname. Esto evita el error si la base aún no existe.
+try {
+    $conexion = new PDO("mysql:host=$server;charset=utf8", $user, $password);
+    //Esto configura el modo de manejo de errores de PDO para que lance excepciones (PDOException) cuando algo sale mal.
+    $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);/*setAttribute sirve para configurar un atributo interno del objeto PDO.*/
 
-/* Crear conexión sin especificar la base de datos */
-$conexion = new mysqli($server, $user, $pass);
-
-/* Verificar conexión */
-if ($conexion->connect_errno) {
-    die("Conexión fallida: " . $conexion->connect_error);
-} else {
-    echo "Conectado correctamente al servidor<br>";
+    echo "Conexión exitosa <br>";
+} catch (PDOException $e) {
+    die("Connection failed: " . $e->getMessage());
+}
+//Crear base de datos si no existe
+try {
+    $sqlDB = "CREATE DATABASE IF NOT EXISTS $db CHARACTER SET utf8 COLLATE utf8_general_ci";
+    $conexion->exec($sqlDB);
+    echo "Base de datos '$db' creada correctamente <br>";
+} catch (PDOException $e) {
+    die("No se puede crear la base de datos: " . $e->getMessage());
 }
 
-/* Crear base de datos si no existe */
-$sqlDB = "CREATE DATABASE IF NOT EXISTS $db";
-if (!$conexion->query($sqlDB)) {
-    die("Error al crear la base de datos: " . $conexion->error);
-} else {
-    echo "Base de datos: '$db'<br>";
+//Conectarse ahora sí a la base de datos. 
+try {
+    $conexion = new PDO("mysql:host=$server;dbname=$db;charset=utf8", $user, $password);
+    $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    echo "Conexión a la base '$db' exitosa<br>";
+} catch (PDOException $e) {
+    die("No se puede conectar a la base '$db': " . $e->getMessage());
 }
 
-/* Seleccionar la base de datos */
-$conexion->select_db($db);
-
-/* Crear tabla si no existe */
-$sqlTable = "CREATE TABLE IF NOT EXISTS $table (
+//Crear tabla si no existe
+try {
+    $sqlTable = "CREATE TABLE IF NOT EXISTS $table (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(25),
     apellido VARCHAR(25)
-)";
-if (!$conexion->query($sqlTable)) {
-    die("Error al crear la tabla: " . $conexion->error);
-} else {
-    echo "Tabla: '$table'<br>";
+    )";
+
+    $conexion->exec($sqlTable);
+    echo "Tabla creada correctamente <br>";
+} catch (PDOException $e) {
+    die("No se puede crear la tabla: " . $e->getMessage());
 }
 ?>

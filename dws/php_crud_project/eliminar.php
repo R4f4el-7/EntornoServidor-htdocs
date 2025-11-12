@@ -1,13 +1,28 @@
 <?php 
-    require "db.php";
+require "db.php";
     
-    if(isset($_POST["eliminar"])){
-        $id = $_POST["id"];
+if(isset($_POST["eliminar"])){
+    $id = $_POST["id"];
 
-        /*Eliminar*/
-        if (!mysqli_query($conexion, "DELETE FROM persona WHERE id = $id;")){
-        die(printf("No se puede eliminar la tabla: [%d] %s", mysqli_connect_errno(),
-        mysqli_connect_error()));
+    //Validar que sea un número entero positivo
+    if(!is_numeric($id) || $id <= 0){
+        die("ID inválido");
+    }
+
+    try {
+        $sql = "DELETE FROM persona WHERE id = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->execute([$id]);
+
+        //Comprobar si se eliminó algún registro
+        //Se usa rowCount() para filas afectadas por una consulta SQL
+        if($stmt->rowCount() > 0){
+            echo "Persona eliminada correctamente";
+        } else {
+            echo "No se encontró ninguna persona con ese ID";
+        }
+    } catch (PDOException $e) {
+        die("No se puede eliminar a la persona: " . $e->getMessage());
     }
 }
 ?>

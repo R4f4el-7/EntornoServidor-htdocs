@@ -1,6 +1,4 @@
 <?php 
-require("db.php");
-
 if(isset($_POST["iniciar"])){
     $opcion = $_POST["opcion"];
     if($opcion == 1){

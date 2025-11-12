@@ -1,17 +1,18 @@
 <?php 
-    require "db.php";
-    
-    if(isset($_POST["insertar"])){
-    $nombre = mysqli_real_escape_string($conexion, $_POST["nombre"]);
-    $apellido = mysqli_real_escape_string($conexion, $_POST["apellido"]);
+require "db.php";
 
-    // Insertar SOLO nombre y apellido
-    $sql = "INSERT INTO persona (nombre, apellido) VALUES ('$nombre', '$apellido')";
+if(isset($_POST["insertar"])){
+    $nombre = $_POST["nombre"];
+    $apellido = $_POST["apellido"];
 
-    if(mysqli_query($conexion, $sql)){
-        echo "Registro insertado correctamente con ID: " . mysqli_insert_id($conexion);
-    } else {
-        echo "Error: " . mysqli_error($conexion);
+    try {
+        $sql = "INSERT INTO persona (nombre, apellido) VALUES (?, ?)";//Lo correcto es usar placeholders(? o :nombre) que previene inyección SQL y no interpolar las variables directamente
+        $stmt = $conexion->prepare($sql);//método de PDO que prepara la consulta para ejecutarla más tarde(analiza sql,verifica que los placeholders sean válidos)
+        $stmt->execute([$nombre,$apellido]);
+
+        echo "Datos insertados correctamente";
+    } catch (PDOException $e) {
+        die("No se puede insertar datos: " . $e->getMessage());
     }
 }
 ?>
@@ -34,4 +35,3 @@
     <a href="index.php">Volver al menu</a>
 </body>
 </html>
-
