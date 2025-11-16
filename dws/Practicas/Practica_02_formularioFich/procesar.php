@@ -30,22 +30,22 @@
     $nombreArchivo = $nombre.".txt";
 
     try {
-    //Se abre o se crea el archivo
-    $archivo = fopen($nombreArchivo, "a");
-    
-    if (!$archivo) {
-        throw new Exception("No se pudo crear o abrir el archivo.");
-    }
+        //Se abre o se crea el archivo
+        $archivo = fopen($nombreArchivo, "a");
+        
+        if (!$archivo) {
+            throw new Exception("No se pudo crear o abrir el archivo.");
+        }
 
-    //Se escriben los datos
-    fwrite($archivo, "Nombre: " . $nombre . PHP_EOL);
-    fwrite($archivo, "Dirección: " . $direccion . PHP_EOL);
-    fwrite($archivo, "Teléfono: " . $telefono . PHP_EOL);
-    fwrite($archivo, "Experiencia 1: " . $exp1 . PHP_EOL);
-    fwrite($archivo, "Experiencia 2: " . $exp2 . PHP_EOL);
-    fwrite($archivo, "Habilidades: " . $habilidades . PHP_EOL);
+        //Se escriben los datos
+        fwrite($archivo, "Nombre: " . $nombre . PHP_EOL);
+        fwrite($archivo, "Dirección: " . $direccion . PHP_EOL);
+        fwrite($archivo, "Teléfono: " . $telefono . PHP_EOL);
+        fwrite($archivo, "Experiencia 1: " . $exp1 . PHP_EOL);
+        fwrite($archivo, "Experiencia 2: " . $exp2 . PHP_EOL);
+        fwrite($archivo, "Habilidades: " . $habilidades . PHP_EOL);
 
-    fclose($archivo);
+        fclose($archivo);
 
     } catch (Exception $e) {
     echo "Error: " . $e->getMessage();

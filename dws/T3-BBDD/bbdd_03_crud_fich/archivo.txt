@@ -1,0 +1,3 @@
+Se ha insertado a la persona con nombre : Persona1 y apellido: Apellido1
+Se ha insertado a la persona con nombre : Gerardo y apellido: Devito
+Se ha consultado a la persona con nombre : Persona1 y apellido:Apellido1
