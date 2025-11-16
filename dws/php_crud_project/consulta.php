@@ -12,7 +12,7 @@ if(isset($_POST["consulta"])){
     }
     //Consulta
     try {
-        $sql = "SELECT nombre, apellido FROM persona WHERE id = ?";
+        $sql = "SELECT nombre, apellido FROM $table WHERE id = ?";
         $stmt = $conexion->prepare($sql);
         $stmt->execute([$id]);
 

@@ -11,7 +11,7 @@ if(isset($_POST["actualizar"])){
     }
     /*Actualizar*/
     try {
-        $sql = "UPDATE persona SET nombre = ?, apellido = ? WHERE id = ?";
+        $sql = "UPDATE $table SET nombre = ?, apellido = ? WHERE id = ?";
         $stmt = $conexion->prepare($sql);
         $stmt->execute([$nombre, $apellido, $id]);
 

@@ -6,7 +6,7 @@ if(isset($_POST["insertar"])){
     $apellido = $_POST["apellido"];
 
     try {
-        $sql = "INSERT INTO persona (nombre, apellido) VALUES (?, ?)";//Lo correcto es usar placeholders(? o :nombre) que previene inyección SQL y no interpolar las variables directamente
+        $sql = "INSERT INTO $table (nombre, apellido) VALUES (?, ?)";//Lo correcto es usar placeholders(? o :nombre) que previene inyección SQL y no interpolar las variables directamente
         $stmt = $conexion->prepare($sql);//método de PDO que prepara la consulta para ejecutarla más tarde(analiza sql,verifica que los placeholders sean válidos)
         $stmt->execute([$nombre,$apellido]);
 

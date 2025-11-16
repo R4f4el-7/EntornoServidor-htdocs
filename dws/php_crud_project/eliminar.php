@@ -10,7 +10,7 @@ if(isset($_POST["eliminar"])){
     }
 
     try {
-        $sql = "DELETE FROM persona WHERE id = ?";
+        $sql = "DELETE FROM $table WHERE id = ?";
         $stmt = $conexion->prepare($sql);
         $stmt->execute([$id]);
 

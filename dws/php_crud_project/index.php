@@ -1,23 +1,18 @@
 <?php 
 require("db.php");
 
-if(isset($_POST["iniciar"])){
-    $opcion = $_POST["opcion"];
-    if($opcion == 1){
-        header("Location: insertar.php");
-        exit;
-    }if($opcion == 2){
-        header("Location: actualizar.php");
-        exit;
-    }if($opcion == 3){
-        header("Location: eliminar.php");
-        exit;
-    }if($opcion == 4){
-        header("Location: consulta.php");
-        exit;
-    } else {
-        echo "Opción no válida";
+$opcion = intval($_POST["opcion"]);//convierte cualquier valor a un número entero.Si el valor no es numérico, devuelve 0.
+
+if($opcion >= 1 && $opcion <= 4){
+    switch($opcion){
+        case 1: header("Location: insertar.php"); break;
+        case 2: header("Location: actualizar.php"); break;
+        case 3: header("Location: eliminar.php"); break;
+        case 4: header("Location: consulta.php"); break;
     }
+    exit;
+} else {
+    echo "Opción no válida";
 }
 ?>
 <!DOCTYPE html>
