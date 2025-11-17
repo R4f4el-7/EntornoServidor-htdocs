@@ -1,6 +1,6 @@
 <?php
     //cookie = guarda la informacion de usuario en la pagina
-    //setcookie(clave, valor, tiempo que durará la cooki, ??);
+    //setcookie(clave, valor, tiempo que durará la cookie, ??);
     setcookie("comida", "pizza", time() + (86400 * 2), "/");
     setcookie("bebida", "monster", time() + (86400 * 1), "/");
     setcookie("postre", "mcflurry", time() + (86400 * 1), "/");

@@ -9,12 +9,15 @@ $table = "persona";
 try {
     $conexion = new PDO("mysql:host=$server;charset=utf8", $user, $password);
     $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
     echo "Conexión exitosa <br>";
+
+    //Borrar base existente
+    $conexion->exec("DROP DATABASE IF EXISTS $db");
+
     //Crear base de datos si no existe
     $conexion->exec("CREATE DATABASE IF NOT EXISTS $db CHARACTER SET utf8 COLLATE utf8_general_ci");
-
     echo "Base de datos '$db' creada correctamente <br>";
+
     //Conectar con la base de datos ya que ahora existe
     $conexion = new PDO("mysql:host=$server;dbname=$db;charset=utf8", $user, $password);
     $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
