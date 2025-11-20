@@ -1,5 +1,16 @@
 <?php
-    session_start();
+session_start();
+
+if(isset($_POST["login"])){
+        if(!empty($_POST["usuario"]) && !empty($_POST["password"])){
+            $_SESSION["usuario"] = $_POST["usuario"];
+            $_SESSION["password"] = $_POST["password"];
+            
+            header("Location: home.php");
+        }else{
+            echo "No hay usuario o contraseña";
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -19,15 +30,3 @@
     </form>
 </body>
 </html>
-<?php
-    if(isset($_POST["login"])){
-        if(!empty($_POST["usuario"]) && !empty($_POST["password"])){
-            $_SESSION["usuario"] = $_POST["usuario"];
-            $_SESSION["password"] = $_POST["password"];
-            
-            header("Location: home.php");
-        }else{
-            echo "No hay usuario o contraseña";
-        }
-    }
-?>

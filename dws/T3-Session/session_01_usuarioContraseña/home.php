@@ -1,8 +1,13 @@
 <?php
-    session_start();
+session_start();
 
-    echo $_SESSION["usuario"] . "<br>";
-    echo $_SESSION["password"] . "<br>";
+echo $_SESSION["usuario"] . "<br>";
+echo $_SESSION["password"] . "<br>";
+
+if(isset($_POST["logout"])){
+    session_destroy();
+    header("Location: index.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,8 +25,5 @@
 </html>
 
 <?php
-    if(isset($_POST["logout"])){
-        session_destroy();
-        header("Location: index.php");
-    }
+    
 ?>
