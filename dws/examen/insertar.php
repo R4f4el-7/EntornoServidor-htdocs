@@ -1,0 +1,40 @@
+<?php 
+require "conexion.php";
+
+if(isset($_POST["insertar"])){
+    $nombre = $_POST["nombre"];
+    $precio = $_POST["precio"];
+    $cantidad = $_POST["cantidad"];
+
+    try {
+        $sql = "INSERT INTO $table (nombre, precio,cantidad) VALUES (?, ?, ?)";//Lo correcto es usar placeholders(? o :nombre) que previene inyección SQL y no interpolar las variables directamente
+        $stmt = $conexion->prepare($sql);//método de PDO que prepara la consulta para ejecutarla más tarde(analiza sql,verifica que los placeholders sean válidos)
+        $stmt->execute([$nombre,$precio,$cantidad]);
+
+        echo "Datos insertados correctamente";
+    } catch (PDOException $e) {
+        die("No se puede insertar datos: " . $e->getMessage());
+    }
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="insertar.php" method="post">    
+        Nombre:<br>
+        <input type="text" name="nombre"><br>
+        Precio:<br>
+        <input type="text" name="precio"><br>
+        Cantidad:<br>
+        <input type="text" name="cantidad"><br>
+        <input type="submit" name="insertar" value="Insertar">
+    </form>
+
+    <a href="index.php">Volver al menu</a>
+</body>
+</html>
