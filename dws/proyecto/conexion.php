@@ -11,7 +11,7 @@ try {
 
     echo "Conexión exitosa <br>";
 } catch (PDOException $e) {
-    die("Connection failed: " . $e->getMessage());
+    die("Conexion fallida: " . $e->getMessage());
 }
 //Crear base de datos si no existe
 try {
@@ -49,7 +49,7 @@ try {
 } catch (PDOException $e) {
     die("No se puede crear la tabla: " . $e->getMessage());
 }
-//Insertar en admin
+//Insertar el admin
 try {
     $sqlAdmin = "SELECT * FROM usuarios WHERE nombre = 'admin' LIMIT 1";
     $stmt = $conexion->query($sqlAdmin);
@@ -113,5 +113,4 @@ try {
 } catch (PDOException $e) {
     die("No se puede crear la tabla: " . $e->getMessage());
 }
-
 ?>
