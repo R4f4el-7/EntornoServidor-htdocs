@@ -1,22 +1,41 @@
 <?php
-//Consultar todos
-    try {
-        $stmt = $conexion->query("SELECT nombre, apellido1, apellido2, telefono, correo, contrasenia FROM usuarios");
-        $personas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+session_start();
+require "conexion.php";
 
-        if(count($personas) > 0){
-            foreach($personas as $p){
-                if($_POST["usuario"] = $p['nombre']){
-                    echo 'El usuario esta registrado';
-                }
+if (isset($_POST['login'])) {
+
+    if (empty($_POST['usuario']) || empty($_POST['password'])) {
+        $error = "Todos los campos son obligatorios";
+    } elseif (!isset($_POST['crear'])) {
+        $error = "Debes aceptar la política de cookies";
+    } else {
+
+        $sql = "SELECT * FROM usuarios WHERE nombre = :usuario LIMIT 1";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bindParam(":usuario", $_POST['usuario']);
+        $stmt->execute();
+
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Comparar contraseña del formulario con la de la BD
+        if ($usuario && password_verify($_POST['password'], $usuario['contrasenia'])) {
+
+            $_SESSION['usuario_id'] = $usuario['id'];
+            $_SESSION['nombre'] = $usuario['nombre'];
+            $_SESSION['correo'] = $usuario['correo'];
+
+            if (isset($_POST['crear'])) {
+                setcookie("usuario_cookie", $usuario['nombre'],time() + 86400, "/");
             }
-        } else {
-            echo "<p>No hay registros</p>";
-        }
 
-    } catch(PDOException $e){
-        echo "Error al consultar todos: ".$e->getMessage();
+            header("Location: index.php");
+            exit;
+
+        } else {
+            $error = "Usuario o contraseña incorrectos";
+        }
     }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,13 +46,22 @@
 </head>
 <body>
     <h2>Login</h2>
+
+    <?php if (isset($error)): ?>
+        <p style="color:red;"><?php echo $error; ?></p>
+    <?php endif; ?>
+
     <form method="post">
         Usuario:<br>
-        <input type="text" name="usuario"><br>
+        <input type="text" name="usuario" required><br>
+
         Contraseña:<br>
-        <input type="password" name="password"><br>
-        <input type="checkbox" name="crear" require>Al aceptar, permites el uso de cookies según nuestra política de privacidad."<br>
-        <input type="submit" value="login" name="login">
+        <input type="password" name="password" required><br>
+
+        <input type="checkbox" name="crear" required>
+        Acepto la política de cookies<br><br>
+
+        <input type="submit" value="Login" name="login">
     </form>
 </body>
 </html>

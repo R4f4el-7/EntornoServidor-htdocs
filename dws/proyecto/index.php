@@ -10,15 +10,14 @@ require "conexion.php";
     <title>Document</title>
 </head>
 <body>
-    <h3>Buenos dias <?php echo $_SESSION["usuario"] ?> </h3>
-    <h2>Login</h2>
-    <a href="login.php">Iniciar sesion</a>
-    <h2>Registrarse</h2>
-    <a href="registro.php">Registrarse</a>
-    <!--Solo aparece si se ha iniciado-->
-    <?php if(!empty($_SESSION["usuario"])): ?>
-        <h2>Logout<h2>
-        <a href="logout.php">ir a logout</a>
+    <?php if (!empty($_SESSION['correo'])): ?>
+        <h3>Buenos días <?php echo htmlspecialchars($_SESSION['nombre']); ?></h3>
+        <a href="logout.php">Cerrar sesión</a>
+    <?php else: ?>
+        <h3>No has iniciado sesión</h3>
+
+        <a href="login.php">Iniciar sesión</a><br>
+        <a href="registro.php">Registrarse</a>
     <?php endif; ?>
 </body>
 </html>

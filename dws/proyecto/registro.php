@@ -6,7 +6,7 @@ if(isset($_POST["registrar"])){
     $apellido2 = $_POST["apellido2"];
     $telefono = $_POST["telefono"];
     $correo = $_POST["correo"];
-    $password = $_POST["password"];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
     try {
         $sql = "INSERT INTO usuarios (nombre, apellido1, apellido2, telefono, correo, contrasenia) VALUES (?, ?, ?, ?, ?, ?)";//Lo correcto es usar placeholders(? o :nombre) que previene inyección SQL y no interpolar las variables directamente

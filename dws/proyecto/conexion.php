@@ -49,6 +49,23 @@ try {
 } catch (PDOException $e) {
     die("No se puede crear la tabla: " . $e->getMessage());
 }
+//Insertar en admin
+try {
+    $sqlAdmin = "SELECT * FROM usuarios WHERE nombre = 'admin' LIMIT 1";
+    $stmt = $conexion->query($sqlAdmin);
+    $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$admin) {
+        $passwordHash = password_hash("1234", PASSWORD_DEFAULT);
+        $sqlInsert = "INSERT INTO usuarios (nombre, correo, contrasenia) VALUES ('admin', 'admin@admin.com', :pass)";
+        $stmtInsert = $conexion->prepare($sqlInsert);
+        $stmtInsert->bindParam(":pass", $passwordHash);
+        $stmtInsert->execute();
+    }
+} catch(PDOException $e) {
+    die("Error creando admin: " . $e->getMessage());
+}
+
 //Tabla libros
 try {
     $sqlTable = "CREATE TABLE IF NOT EXISTS libros (
