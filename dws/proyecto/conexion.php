@@ -69,12 +69,14 @@ try {
 //Tabla libros
 try {
     $sqlTable = "CREATE TABLE IF NOT EXISTS libros (
-        libro_id INT AUTO_INCREMENT PRIMARY KEY,
-        titulo VARCHAR(100),
-        isbn VARCHAR(13) UNIQUE,
-        anio_publicacion INT,
-        categoria VARCHAR(30),
-        stock INT NOT NULL
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        titulo VARCHAR(255),
+        autor VARCHAR(255),
+        editorial VARCHAR(255),
+        anio_publicacion VARCHAR(10),
+        isbn VARCHAR(20),
+        descripcion TEXT,
+        imagen VARCHAR(255)
     );";
 
     $conexion->exec($sqlTable);
@@ -105,7 +107,7 @@ try {
         cantidad_prestada INT NOT NULL,
         fecha_devolucion DATE,
         FOREIGN KEY (prestamo_id) REFERENCES prestamos(prestamo_id),
-        FOREIGN KEY (libro_id) REFERENCES libros(libro_id)
+        FOREIGN KEY (libro_id) REFERENCES libros(id)
     )";
 
     $conexion->exec($sqlTable);
@@ -113,4 +115,83 @@ try {
 } catch (PDOException $e) {
     die("No se puede crear la tabla: " . $e->getMessage());
 }
+//api googles books
+//api googles books
+try {
+    // Verificar si la tabla libros está vacía
+    $stmt = $conexion->query("SELECT COUNT(*) FROM libros");
+    $totalLibros = $stmt->fetchColumn();
+
+    if ($totalLibros == 0) {
+
+        // Lista de libros conocidos
+        $librosConocidos = [
+            "Harry Potter y la piedra filosofal",
+            "El señor de los anillos",
+            "1984 George Orwell",
+            "Cien años de soledad",
+            "Matar a un ruiseñor",
+            "Orgullo y prejuicio",
+            "Don Quijote de la Mancha",
+            "El gran Gatsby",
+            "La ladrona de libros",
+            "Crimen y castigo"
+        ];
+
+        $insertStmt = $conexion->prepare(
+            "INSERT INTO libros 
+            (titulo, autor, editorial, anio_publicacion, isbn, descripcion, imagen)
+            VALUES (?, ?, ?, ?, ?, ?, ?)"
+        );
+
+        foreach ($librosConocidos as $libro) {
+
+            $url = "https://www.googleapis.com/books/v1/volumes?q=" . urlencode($libro) . "&maxResults=1";
+            $response = file_get_contents($url);
+
+            if ($response !== false) {
+
+                $data = json_decode($response, true);
+
+                if (isset($data['items'][0]['volumeInfo'])) {
+                    $info = $data['items'][0]['volumeInfo'];
+
+                    // Verificar que tenga todos los campos esenciales
+                    if (!empty($info['title']) && !empty($info['authors'][0]) &&
+                        !empty($info['publisher']) && !empty($info['publishedDate']) &&
+                        !empty($info['description']) && !empty($info['imageLinks']['thumbnail']) &&
+                        !empty($info['industryIdentifiers'])) {
+
+                        // Obtener ISBN_13
+                        $isbn = null;
+                        foreach ($info['industryIdentifiers'] as $id) {
+                            if ($id['type'] === 'ISBN_13') {
+                                $isbn = $id['identifier'];
+                                break;
+                            }
+                        }
+
+                        // Insertar solo si tiene ISBN
+                        if ($isbn) {
+                            $insertStmt->execute([
+                                $info['title'],
+                                $info['authors'][0],
+                                $info['publisher'],
+                                $info['publishedDate'],
+                                $isbn,
+                                $info['description'],
+                                $info['imageLinks']['thumbnail']
+                            ]);
+                        }
+                    }
+                }
+            }
+        }
+
+        echo "Libros conocidos importados automáticamente<br>";
+    }
+} catch (PDOException $e) {
+    echo "Error importando libros: " . $e->getMessage();
+}
+
 ?>

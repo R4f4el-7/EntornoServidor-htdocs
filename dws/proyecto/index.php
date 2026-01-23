@@ -14,15 +14,19 @@ require "conexion.php";
         <h3>Buenos días <?php echo htmlspecialchars($_SESSION['nombre']); ?></h3>
         <h2>Estas en la vista del admin</h2>
         <a href="logout.php">Cerrar sesión</a>
+        <a href="reservaLibros.php">Ir a reservar libros</a>
     <?php elseif (!empty($_SESSION['correo'])): ?>
         <h3>Buenos días <?php echo htmlspecialchars($_SESSION['nombre']); ?></h3>
 
-        <a href="logout.php">Cerrar sesión</a>
+        <a href="logout.php">Cerrar sesión</a><br>
+        <a href="reservaLibros.php">Ir a reservar libros</a>
     <?php else: ?>
         <h3>No has iniciado sesión</h3>
 
         <a href="login.php">Iniciar sesión</a><br>
-        <a href="registro.php">Registrarse</a>
+        <a href="registro.php">Registrarse</a><br>
     <?php endif; ?>
+
+    
 </body>
 </html>
