@@ -116,7 +116,6 @@ try {
     die("No se puede crear la tabla: " . $e->getMessage());
 }
 //api googles books
-//api googles books
 try {
     // Verificar si la tabla libros está vacía
     $stmt = $conexion->query("SELECT COUNT(*) FROM libros");
@@ -129,13 +128,12 @@ try {
             "Harry Potter y la piedra filosofal",
             "El señor de los anillos",
             "1984 George Orwell",
-            "Cien años de soledad",
-            "Matar a un ruiseñor",
-            "Orgullo y prejuicio",
+            "El corredor del laberinto",
+            "Los juegos del hambre",
+            "Juego de tronos cancion",
             "Don Quijote de la Mancha",
             "El gran Gatsby",
-            "La ladrona de libros",
-            "Crimen y castigo"
+            "La ladrona de libros"
         ];
 
         $insertStmt = $conexion->prepare(
@@ -193,5 +191,4 @@ try {
 } catch (PDOException $e) {
     echo "Error importando libros: " . $e->getMessage();
 }
-
 ?>

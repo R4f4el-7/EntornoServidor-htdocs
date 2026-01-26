@@ -53,9 +53,7 @@ if (isset($_POST['reservar'])) {
     }
 }
 
-// ===============================
-// OBTENER LISTADO DE LIBROS
-// ===============================
+//OBTENER LISTADO DE LIBROS
 $libros = $conexion->query("SELECT * FROM libros ORDER BY titulo");
 ?>
 <!DOCTYPE html>
@@ -63,33 +61,7 @@ $libros = $conexion->query("SELECT * FROM libros ORDER BY titulo");
 <head>
     <meta charset="UTF-8">
     <title>Reservar Libros</title>
-    <style>
-        body { font-family: Arial; }
-        .libro {
-            border: 1px solid #ccc;
-            padding: 15px;
-            margin: 10px;
-            width: 300px;
-            display: inline-block;
-            vertical-align: top;
-        }
-        img { max-width: 100px; display:block; margin-bottom:10px; }
-        button {
-            background: #2e86de;
-            color: white;
-            border: none;
-            padding: 8px;
-            cursor: pointer;
-        }
-        .mensaje { 
-            background: #d4edda; 
-            color: #155724; 
-            padding: 10px; 
-            margin: 10px 0; 
-            border-radius: 5px; 
-        }
-        input.cantidad { width: 50px; text-align: center; }
-    </style>
+    <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
 
@@ -108,10 +80,8 @@ $libros = $conexion->query("SELECT * FROM libros ORDER BY titulo");
             <img src="<?= $libro['imagen'] ?>" alt="Portada">
         <?php endif; ?>
 
-        <!-- Mostrar resumen de la descripción -->
         <p><?= substr(strip_tags($libro['descripcion']), 0, 120) ?>...</p>
 
-        <!-- Formulario de reserva -->
         <form method="POST">
             <input type="hidden" name="libro_id" value="<?= $libro['id'] ?>">
             Cantidad:<br>
@@ -122,6 +92,7 @@ $libros = $conexion->query("SELECT * FROM libros ORDER BY titulo");
     </div>
 <?php endforeach; ?>
 </div>
+
 
 <a href="index.php">Ir a inicio</a>
 </body>
