@@ -2,15 +2,13 @@
 session_start();
 require_once "conexion.php";
 
-// Simulación de usuario logueado (para pruebas)
+//Simulación de usuario logueado (para pruebas)
 if (!isset($_SESSION['usuario_id'])) {
     $_SESSION['usuario_id'] = 1; // admin
 }
 $usuario_id = $_SESSION['usuario_id'];
 
-// ===============================
-// PROCESAR RESERVA
-// ===============================
+//PROCESAR RESERVA
 if (isset($_POST['reservar'])) {
 
     $libro_id = $_POST['libro_id'];
@@ -44,7 +42,7 @@ if (isset($_POST['reservar'])) {
 
         // Confirmar transacción
         $conexion->commit();
-        $mensaje = "Reservaste $cantidad libro(s). Devuelve antes del $fecha_devolucion";
+        $mensaje = "Reservaste $cantidad libro(s) y los tienes que devolver antes del $fecha_devolucion";
 
     } catch (PDOException $e) {
         // Revertir cambios en caso de error

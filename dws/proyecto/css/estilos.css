@@ -1,23 +1,23 @@
 body { 
-    font-family: Arial, sans-serif;
+    font-family: "MS Gothic", Arial, Helvetica, sans-serif;
     background-color: blue; /* fondo azul */
-    color: #ffffff; /* texto blanco general */
+    color: #ffffff;
     margin: 0;
     padding: 20px;
 }
 
 .contenedor {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 libros por fila */
+    grid-template-columns: repeat(3, 1fr); /*3 libros por fila*/
     gap: 20px;
     max-width: 1000px;
     margin: auto;
 }
 
 .libro {
-    border: solid purple; /* borde gris oscuro */
+    border: solid purple; /*borde gris oscuro*/
     padding: 15px;
-    color: #ffffff; /* texto blanco dentro de la tarjeta */
+    color: #ffffff;
 }
 
 img {
@@ -37,16 +37,13 @@ button {
 }
 
 button:hover {
-    background: green;
-    color: aqua;
+    background: red;
+    color: blue;
 }
 
 .mensaje { 
-    background: #155724; 
-    color: #d4edda; 
     padding: 10px; 
-    margin: 10px 0; 
-    border-radius: 5px; 
+    margin: 10px 0;
 }
 
 input.cantidad {
@@ -54,8 +51,8 @@ input.cantidad {
     text-align: center;
     border-radius: 4px;
     border: 1px solid #555;
-    background-color: #2c2c2c;
-    color: #fff;
+    background-color: white;
+    color: black;
     padding: 2px 5px;
 }
 

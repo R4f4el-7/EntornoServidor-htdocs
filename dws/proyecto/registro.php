@@ -1,22 +1,31 @@
 <?php
 require "conexion.php";
 if(isset($_POST["registrar"])){
-    $nombre = $_POST["nombre"];
-    $apellido1 = $_POST["apellido1"];
-    $apellido2 = $_POST["apellido2"];
-    $telefono = $_POST["telefono"];
-    $correo = $_POST["correo"];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $nombre = trim($_POST["nombre"]);
+    $apellido1 = trim($_POST["apellido1"]);
+    $apellido2 = trim($_POST["apellido2"]);
+    $telefono = trim($_POST["telefono"]);
+    $correo = trim($_POST["correo"]);
+    $password = $_POST['password'];
 
-    try {
-        $sql = "INSERT INTO usuarios (nombre, apellido1, apellido2, telefono, correo, contrasenia) VALUES (?, ?, ?, ?, ?, ?)";//Lo correcto es usar placeholders(? o :nombre) que previene inyección SQL y no interpolar las variables directamente
-        $stmt = $conexion->prepare($sql);//método de PDO que prepara la consulta para ejecutarla más tarde(analiza sql,verifica que los placeholders sean válidos)
-        $stmt->execute([$nombre,$apellido1,$apellido2,$telefono,$correo,$password]);
+    //Validaciones básicas
+        if($nombre === "" || $apellido1 === "" || $correo === "" || $password === ""){
+            echo "Por favor completa todos los campos obligatorios.";
+        } elseif(!filter_var($correo, FILTER_VALIDATE_EMAIL)){
+            echo "El correo no tiene un formato válido.";
+        }else{
+            //Hashear contraseña
+            $password_hash = password_hash($password, PASSWORD_DEFAULT);
+            try {
+                $sql = "INSERT INTO usuarios (nombre, apellido1, apellido2, telefono, correo, contrasenia) VALUES (?, ?, ?, ?, ?, ?)";//Lo correcto es usar placeholders(? o :nombre) que previene inyección SQL y no interpolar las variables directamente
+                $stmt = $conexion->prepare($sql);//método de PDO que prepara la consulta para ejecutarla más tarde(analiza sql,verifica que los placeholders sean válidos)
+                $stmt->execute([$nombre,$apellido1,$apellido2,$telefono,$correo,$password]);
 
-        echo "Datos insertados correctamente";
-    } catch (PDOException $e) {
-        die("No se puede insertar datos: " . $e->getMessage());
-    }
+                echo "Datos insertados correctamente";
+            } catch (PDOException $e) {
+                die("No se puede insertar datos: " . $e->getMessage());
+            }
+        }
 }
 ?>
 <!DOCTYPE html>
@@ -25,6 +34,7 @@ if(isset($_POST["registrar"])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
+    <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
     <h2>Registro</h2>
@@ -44,5 +54,6 @@ if(isset($_POST["registrar"])){
         <input type="checkbox" name="crear" require>Al aceptar, permites el uso de cookies según nuestra política de privacidad."<br>
         <input type="submit" value="Registrarse" name="registrar">
     </form>
+    <a href="index.php">Ir a inicio</a>
 </body>
 </html>

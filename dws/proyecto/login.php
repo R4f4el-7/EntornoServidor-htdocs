@@ -43,6 +43,7 @@ if (isset($_POST['login'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
     <h2>Login</h2>
@@ -63,5 +64,6 @@ if (isset($_POST['login'])) {
 
         <input type="submit" value="Login" name="login">
     </form>
+    <a href="index.php">Ir a inicio</a>
 </body>
 </html>
