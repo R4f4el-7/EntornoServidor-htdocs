@@ -2,9 +2,8 @@
 session_start();
 require_once "conexion.php";
 
-//Simulación de usuario logueado (para pruebas)
-if (!isset($_SESSION['usuario_id'])) {
-    $_SESSION['usuario_id'] = 1; // admin
+if (empty($_SESSION['usuario_id'])) {
+    die("Debes iniciar sesión para reservar libros");
 }
 $usuario_id = $_SESSION['usuario_id'];
 
@@ -42,7 +41,7 @@ if (isset($_POST['reservar'])) {
 
         // Confirmar transacción
         $conexion->commit();
-        $mensaje = "Reservaste $cantidad libro(s) y los tienes que devolver antes del $fecha_devolucion";
+        $mensaje = "Has reservado $cantidad libro(s) y tienes que devolverlos antes del $fecha_devolucion";
 
     } catch (PDOException $e) {
         // Revertir cambios en caso de error

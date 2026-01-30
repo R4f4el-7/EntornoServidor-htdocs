@@ -2,6 +2,11 @@
 session_start();
 require "conexion.php";
 
+//Solo admin
+if (empty($_SESSION['correo']) || $_SESSION['nombre'] !== 'admin') {
+    die("Acceso denegado");
+}
+
 if(isset($_POST["eliminar"])){
     $id = $_POST["id"];
 
@@ -33,15 +38,17 @@ if(isset($_POST["eliminar"])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eliminar libro</title>
+    <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
-    <h2>Eliminar libro</h2>
-    <form action="eliminar.php" method="post">  
-        <h2>Eliminar</h2>
-        Id:<br>
-        <input type="text" name="id"><br>  
-        <input type="submit" name="eliminar" value="eliminar">
-    </form>
+    <div class="cuadroRetro">
+        <form action="eliminar.php" method="post">  
+            <h2>Eliminar libro</h2>
+            Id:<br>
+            <input type="text" name="id"><br>  
+            <input type="submit" name="eliminar" value="eliminar">
+        </form>
+    </div>
 
     <a href="index.php">Volver al menu</a>
 </body>

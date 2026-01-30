@@ -16,8 +16,10 @@ if (isset($_POST['guardar'])) {
     $descripcion = $_POST['descripcion'];
     $imagen = $_POST['imagen'];
 
-    $sql = "INSERT INTO libros (titulo, autor, editorial, anio_publicacion, isbn, descripcion, imagen)
+    $sql = "INSERT INTO libros 
+            (titulo, autor, editorial, anio_publicacion, isbn, descripcion, imagen)
             VALUES (:titulo, :autor, :editorial, :anio, :isbn, :descripcion, :imagen)";
+
     $stmt = $conexion->prepare($sql);
     $stmt->bindParam(':titulo', $titulo);
     $stmt->bindParam(':autor', $autor);
@@ -43,25 +45,27 @@ if (isset($_POST['guardar'])) {
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
-    <h2>Insertar libro</h2>
-    <form action="insertar.php" method="post">
-        Título:<br>
-        <input type="text" name="titulo" required><br>
-        Autor:<br>
-        <input type="text" name="autor" required><br>
-        Editorial:<br>
-        <input type="text" name="editorial"><br>
-        Año de publicación:<br>
-        <input type="text" name="anio"><br>
-        ISBN:<br>
-        <input type="text" name="isbn"><br>
-        Descripción:<br>
-        <textarea name="descripcion"></textarea><br>
-        Imagen (URL):<br>
-        <input type="text" name="imagen"><br>
+    <div class="cuadroRetro">
+        <h2>Insertar libro</h2>
+        <form action="insertar.php" method="post">
+            Título:<br>
+            <input type="text" name="titulo" required><br>
+            Autor:<br>
+            <input type="text" name="autor" required><br>
+            Editorial:<br>
+            <input type="text" name="editorial"><br>
+            Año de publicación:<br>
+            <input type="text" name="anio_publicacion"><br>
+            ISBN:<br>
+            <input type="text" name="isbn"><br>
+            Descripción:<br>
+            <textarea name="descripcion"></textarea><br>
+            Imagen (URL):<br>
+            <input type="text" name="imagen"><br>
 
-        <input type="submit" name="guardar" value="Guardar">
-    </form>
+            <input type="submit" name="guardar" value="Guardar">
+        </form>
+    </div>
 
     <a href="index.php">Volver al inicio</a>
 </body>

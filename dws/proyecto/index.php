@@ -27,31 +27,37 @@ if($opcion >= 1 && $opcion <= 6){
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
+    <!--Header-->
     <?php if (!empty($_SESSION['correo']) && $_SESSION['nombre'] == "admin"): ?>
-        <h3>Buenos días <?php echo htmlspecialchars($_SESSION['nombre']); ?></h3>
+        <div class="cuadroRetro_2">
+            <h3>Buenos días <?php echo htmlspecialchars($_SESSION['nombre']); ?></h3>
 
-        <h4>1.Insertar</h4>
-        <h4>2.Actualizar</h4>
-        <h4>3.Borrar</h4>
-        <h4>4.consulta</h4>
+            <h4>1.Insertar</h4>
+            <h4>2.Actualizar</h4>
+            <h4>3.Borrar</h4>
+            <h4>4.consulta</h4>
 
-        <form action="index.php" method="post">
-            <h3>Elige opcion(ej.1,2,3...)</h3>
-            <input type="text" name="opcion">
-            <input type="submit" name="iniciar" value="aceptar">
-        </form>
+            <form action="index.php" method="post">
+                <h3>Elige opcion(ej.1,2,3...)</h3>
+                <input type="text" name="opcion">
+                <input type="submit" name="iniciar" value="aceptar">
+            </form>
+        </div>
 
         <a href="logout.php">Cerrar sesión</a><br>
         <a href="reservaLibros.php">Ir a reservar libros</a>
 
     <?php elseif (!empty($_SESSION['correo'])): ?>
-        <h3>Buenos días <?php echo htmlspecialchars($_SESSION['nombre']); ?></h3>
+        <div class="cuadroRetro_2">
+            <h3>Buenos días <?php echo htmlspecialchars($_SESSION['nombre']); ?></h3>
+        </div>
 
         <a href="logout.php">Cerrar sesión</a><br>
         <a href="reservaLibros.php">Ir a reservar libros</a>
     <?php else: ?>
-        <h3>No has iniciado sesión</h3>
-
+        <div class="cuadroRetro">
+            <h3>No has iniciado sesión</h3>
+        </div>
         <a href="login.php">Iniciar sesión</a><br>
         <a href="registro.php">Registrarse</a><br>
     <?php endif; ?>

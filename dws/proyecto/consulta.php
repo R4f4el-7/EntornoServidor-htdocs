@@ -43,27 +43,26 @@ if($accion == 'consulta'){
 if($accion == 'todos'){
     try {
         $stmt = $conexion->query("SELECT id, titulo, autor FROM libros");
-        $personas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $libros = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if(count($personas) > 0){
+        if(count($libros) > 0){
             echo "<h3>Lista de todos los libros</h3>";
             echo "<table border='1' cellpadding='5'>
                     <tr>
                         <th>ID</th>
-                        <th>Titulo</th>
-                        <th>autor</th>
+                        <th>Título</th>
+                        <th>Autor</th>
                     </tr>";
 
-            foreach($personas as $p){
+            foreach($libros as $l){
                 echo "<tr>
-                        <td>{$p['id']}</td>
-                        <td>{$p['nombre']}</td>
-                        <td>{$p['apellido']}</td>
+                        <td>{$l['id']}</td>
+                        <td>{$l['titulo']}</td>
+                        <td>{$l['autor']}</td>
                     </tr>";
             }
 
             echo "</table>";
-
         } else {
             echo "<p>No hay registros</p>";
         }
@@ -80,19 +79,22 @@ if($accion == 'todos'){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Colsulta de libro</title>
+    <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
-    <!-- FORMULARIO -->
-    <form action="consulta.php" method="post">
-        Id:<br><input type="text" name="id"><br>
-        <input type="submit" value="Consultar">
-    </form>
-    
-    <!-- BOTÓN MOSTRAR TODOS -->
-    <form action="consulta.php" method="post" style="margin-top:10px;">
-        <input type="submit" value="Mostrar todos">
-    </form>
-
+    <div class="cuadroRetro">
+        <h2>Consultar libro</h2>
+        <!-- FORMULARIO -->
+        <form action="consulta.php" method="post">
+            Id:<br><input type="text" name="id"><br>
+            <input type="submit" value="Consultar">
+        </form>
+        
+        <!-- BOTÓN MOSTRAR TODOS -->
+        <form action="consulta.php" method="post" style="margin-top:10px;">
+            <input type="submit" name="mostrar_todos" value="Mostrar todos">
+        </form>
+    </div>
     <a href="index.php">Volver al menú</a>
 </body>
 </html>

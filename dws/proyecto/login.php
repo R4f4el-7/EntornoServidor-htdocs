@@ -46,24 +46,25 @@ if (isset($_POST['login'])) {
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
-    <h2>Login</h2>
-
     <?php if (isset($error)): ?>
         <p style="color:red;"><?php echo $error; ?></p>
     <?php endif; ?>
+    <div class="cuadroRetro">
+        <h2>Login</h2>
+        <form method="post">
+            Usuario:<br>
+            <input type="text" name="usuario" required><br>
 
-    <form method="post">
-        Usuario:<br>
-        <input type="text" name="usuario" required><br>
+            Contraseña:<br>
+            <input type="password" name="password" required><br>
 
-        Contraseña:<br>
-        <input type="password" name="password" required><br>
+            <input type="checkbox" name="crear" required>
+            Acepto la política de cookies<br><br>
 
-        <input type="checkbox" name="crear" required>
-        Acepto la política de cookies<br><br>
-
-        <input type="submit" value="Login" name="login">
-    </form>
+            <input type="submit" value="Login" name="login">
+        </form>
+    </div>
+    
     <a href="index.php">Ir a inicio</a>
 </body>
 </html>
