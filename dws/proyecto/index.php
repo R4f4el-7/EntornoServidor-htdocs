@@ -27,7 +27,7 @@ if($opcion >= 1 && $opcion <= 6){
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
-    <!--Header-->
+    <h2>Biblioteca</h2>
     <?php if (!empty($_SESSION['correo']) && $_SESSION['nombre'] == "admin"): ?>
         <div class="cuadroRetro_2">
             <h3>Buenos días <?php echo htmlspecialchars($_SESSION['nombre']); ?></h3>

@@ -5,22 +5,6 @@ body {
     margin: 0;
     padding: 20px;
 }
-/*header*/
-.hero {
-  width: 100%;
-  height: 300px; /* Ajusta la altura a tu gusto */
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: black; /* Opcional: marco de color retro */
-}
-
-.hero img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Hace que el GIF llene el banner sin deformarse */
-}
 /*login*/
 .cuadroRetro{
     width: fit-content; 
@@ -36,7 +20,7 @@ body {
     color: #ffffff;
     background-color: #2121a0;
     border: 3px solid #CD05BB; /* color inicial */
-    animation: parpadeoBorde 1s infinite alternate; /* animación continua */
+    animation: parpadeoBorde 0.5s infinite alternate; /* animación continua */
     margin-bottom: 10px;
 }
 
