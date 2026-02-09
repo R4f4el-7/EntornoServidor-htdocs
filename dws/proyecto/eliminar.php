@@ -2,54 +2,88 @@
 session_start();
 require "conexion.php";
 
-//Solo admin
+// Solo admin
 if (empty($_SESSION['correo']) || $_SESSION['nombre'] !== 'admin') {
     die("Acceso denegado");
 }
 
-if(isset($_POST["eliminar"])){
-    $id = $_POST["id"];
+// Obtener libros para el SELECT
+$stmtLibros = $conexion->query("SELECT id, titulo FROM libros ORDER BY titulo");
+$libros = $stmtLibros->fetchAll(PDO::FETCH_ASSOC);
 
-    //Validar que sea un número entero positivo
-    if(!is_numeric($id) || $id <= 0){
-        die("ID inválido");
-    }
+$mensaje = "";
 
-    try {
-        $sql = "DELETE FROM libros WHERE id = ?";
-        $stmt = $conexion->prepare($sql);
-        $stmt->execute([$id]);
+// ========================
+// ELIMINAR LIBRO
+// ========================
+if (isset($_POST["eliminar"])) {
 
-        //Comprobar si se eliminó algún registro
-        //Se usa rowCount() para filas afectadas por una consulta SQL
-        if($stmt->rowCount() > 0){
-            echo "Libro eliminado correctamente";
-        } else {
-            echo "No se encontró ningun producto con ese ID";
+    $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+
+    if (!$id) {
+        $mensaje = "Libro inválido";
+    } else {
+
+        try {
+
+            // Verificar si hay préstamos activos
+            $stmt = $conexion->prepare("SELECT COUNT(*) FROM detalles_prestamo WHERE libro_id = ?");
+            $stmt->execute([$id]);
+            $cantidad = $stmt->fetchColumn();
+
+            if ($cantidad > 0) {
+                $mensaje = "No se puede eliminar el libro porque tiene préstamos asociados ($cantidad).";
+            } else {
+                // proceder a eliminar
+                $stmt = $conexion->prepare("DELETE FROM libros WHERE id = ?");
+                $stmt->execute([$id]);
+                $mensaje = "Libro eliminado correctamente.";
+            }
+            
+        } catch (PDOException $e) {
+            $mensaje = "Error al eliminar: " . $e->getMessage();
         }
-    } catch (PDOException $e) {
-        die("No se puede eliminar a la producto: " . $e->getMessage());
     }
 }
 ?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Eliminar libro</title>
     <link rel="stylesheet" href="css/estilos.css">
 </head>
+
 <body>
     <div class="cuadroRetro">
-        <form action="eliminar.php" method="post">  
-            <h2>Eliminar libro</h2>
-            Id:<br>
-            <input type="text" name="id"><br>  
-            <input type="submit" name="eliminar" value="eliminar">
+        <h2>Eliminar libro</h2>
+
+        <?php if ($mensaje) : ?>
+            <p><?= $mensaje ?></p>
+        <?php endif; ?>
+
+        <form method="post">
+
+            <label for="id">Libro:</label><br>
+            <select name="id" id="id" required>
+                <option value="">-- Selecciona un libro --</option>
+
+                <?php foreach ($libros as $l) : ?>
+                    <option value="<?= $l['id'] ?>">
+                        <?= htmlspecialchars($l['titulo']) ?>
+                    </option>
+                <?php endforeach; ?>
+
+            </select>
+            <br><br>
+
+            <input type="submit" name="eliminar" value="Eliminar libro">
         </form>
     </div>
 
-    <a href="index.php">Volver al menu</a>
+    <a href="index.php">Volver al menú</a>
+
 </body>
 </html>
+

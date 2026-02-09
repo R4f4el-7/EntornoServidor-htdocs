@@ -1,51 +1,77 @@
 <?php
 session_start();
 require "conexion.php";
-//Determinar acción según formulario
+
+// Obtener todos los libros para el SELECT
+$stmtLibros = $conexion->query("SELECT id, titulo FROM libros ORDER BY titulo");
+$librosSelect = $stmtLibros->fetchAll(PDO::FETCH_ASSOC);
+
+// Determinar acción
 $accion = '';
+
 if (isset($_POST['id']) && !empty($_POST['id'])) {
     $accion = 'consulta';
 } elseif (isset($_POST['mostrar_todos'])) {
     $accion = 'todos';
 }
-//Consulta por ID
-if($accion == 'consulta'){
-    $id = $_POST['id'];
-    if(!is_numeric($id) || $id <= 0){
+
+
+// ========================
+// CONSULTA POR SELECT
+// ========================
+if ($accion == 'consulta') {
+
+    $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+
+    if (!$id) {
         echo "<p>ID inválido</p>";
     } else {
         try {
+
             $stmt = $conexion->prepare("SELECT * FROM libros WHERE id = ?");
             $stmt->execute([$id]);
             $libro = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($libro) {
+
                 echo "<h3>Detalles del libro</h3>";
-                echo "<p><strong>Título:</strong> {$libro['titulo']}<br>";
-                echo "<strong>Autor:</strong> {$libro['autor']}<br>";
-                echo "<strong>Editorial:</strong> {$libro['editorial']}<br>";
-                echo "<strong>Año de publicación:</strong> {$libro['anio_publicacion']}<br>";
-                echo "<strong>ISBN:</strong> {$libro['isbn']}<br>";
-                echo "<strong>Descripción:</strong> {$libro['descripcion']}<br>";
+                echo "<p>
+                <strong>Título:</strong> ".htmlspecialchars($libro['titulo'])."<br>
+                <strong>Autor:</strong> ".htmlspecialchars($libro['autor'])."<br>
+                <strong>Editorial:</strong> ".htmlspecialchars($libro['editorial'])."<br>
+                <strong>Año de publicación:</strong> ".htmlspecialchars($libro['anio_publicacion'])."<br>
+                <strong>ISBN:</strong> ".htmlspecialchars($libro['isbn'])."<br>
+                <strong>Descripción:</strong> ".htmlspecialchars($libro['descripcion'])."<br>";
+
                 if (!empty($libro['imagen'])) {
-                    echo "<img src='{$libro['imagen']}' alt='Imagen libro' style='max-width:150px;'><br>";
+                    echo "<img src='".htmlspecialchars($libro['imagen'])."' style='max-width:150px;'><br>";
                 }
+
                 echo "</p>";
+
             } else {
                 echo "<p>No se encontró el libro</p>";
             }
-        } catch(PDOException $e){
-            echo "Error al consultar: ".$e->getMessage();
+
+        } catch (PDOException $e) {
+            echo "Error al consultar: " . $e->getMessage();
         }
     }
 }
-//Mostrar todas las personasx
-if($accion == 'todos'){
+
+
+// ========================
+// MOSTRAR TODOS
+// ========================
+if ($accion == 'todos') {
+
     try {
+
         $stmt = $conexion->query("SELECT id, titulo, autor FROM libros");
         $libros = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if(count($libros) > 0){
+        if (count($libros) > 0) {
+
             echo "<h3>Lista de todos los libros</h3>";
             echo "<table border='1' cellpadding='5'>
                     <tr>
@@ -54,47 +80,64 @@ if($accion == 'todos'){
                         <th>Autor</th>
                     </tr>";
 
-            foreach($libros as $l){
+            foreach ($libros as $l) {
                 echo "<tr>
-                        <td>{$l['id']}</td>
-                        <td>{$l['titulo']}</td>
-                        <td>{$l['autor']}</td>
+                        <td>".htmlspecialchars($l['id'])."</td>
+                        <td>".htmlspecialchars($l['titulo'])."</td>
+                        <td>".htmlspecialchars($l['autor'])."</td>
                     </tr>";
             }
 
             echo "</table>";
+
         } else {
             echo "<p>No hay registros</p>";
         }
 
-    } catch(PDOException $e){
-        echo "Error al consultar todos: ".$e->getMessage();
+    } catch (PDOException $e) {
+        echo "Error al consultar todos: " . $e->getMessage();
     }
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Colsulta de libro</title>
+    <title>Consulta de libros</title>
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
+
     <div class="cuadroRetro">
+
         <h2>Consultar libro</h2>
-        <!-- FORMULARIO -->
-        <form action="consulta.php" method="post">
-            Id:<br><input type="text" name="id"><br>
+
+        <!-- SELECT LIBRO -->
+        <form method="post">
+            Libro:<br>
+            <select name="id" required>
+                <option value="">-- Selecciona un libro --</option>
+                <?php foreach ($librosSelect as $l): ?>
+                    <option value="<?= $l['id'] ?>">
+                        <?= htmlspecialchars($l['titulo']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+
+            <br><br>
             <input type="submit" value="Consultar">
         </form>
-        
+
         <!-- BOTÓN MOSTRAR TODOS -->
-        <form action="consulta.php" method="post" style="margin-top:10px;">
+        <form method="post" style="margin-top:10px;">
             <input type="submit" name="mostrar_todos" value="Mostrar todos">
         </form>
+
     </div>
+
     <a href="index.php">Volver al menú</a>
+
 </body>
 </html>
+

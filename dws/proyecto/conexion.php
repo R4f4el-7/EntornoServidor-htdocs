@@ -161,13 +161,16 @@ try {
                             }
                         }
 
-                        // Insertar solo si tiene ISBN
-                        if ($isbn) {
+                        // Extraer solo año
+                        $anio = substr($info['publishedDate'], 0, 4);
+
+                        // Insertar solo si tiene ISBN y año válido
+                        if ($isbn && is_numeric($anio)) {
                             $insertStmt->execute([
                                 $info['title'],
                                 $info['authors'][0],
                                 $info['publisher'],
-                                $info['publishedDate'],
+                                $anio, //Solo año
                                 $isbn,
                                 $info['description'],
                                 $info['imageLinks']['thumbnail']
