@@ -115,7 +115,7 @@ try {
 
     if ($totalLibros == 0) {
 
-        // Lista de libros conocidos
+        //Lista de libros conocidos
         $librosConocidos = [
             "Harry Potter y la piedra filosofal",
             "El señor de los anillos",
@@ -146,13 +146,13 @@ try {
                 if (isset($data['items'][0]['volumeInfo'])) {
                     $info = $data['items'][0]['volumeInfo'];
 
-                    // Verificar que tenga todos los campos esenciales
+                    //Verificar que tenga todos los campos esenciales
                     if (!empty($info['title']) && !empty($info['authors'][0]) &&
                         !empty($info['publisher']) && !empty($info['publishedDate']) &&
                         !empty($info['description']) && !empty($info['imageLinks']['thumbnail']) &&
                         !empty($info['industryIdentifiers'])) {
 
-                        // Obtener ISBN_13
+                        //Obtener ISBN_13
                         $isbn = null;
                         foreach ($info['industryIdentifiers'] as $id) {
                             if ($id['type'] === 'ISBN_13') {
@@ -161,10 +161,10 @@ try {
                             }
                         }
 
-                        // Extraer solo año
+                        //Extraer solo año
                         $anio = substr($info['publishedDate'], 0, 4);
 
-                        // Insertar solo si tiene ISBN y año válido
+                        //Insertar solo si tiene ISBN y año válido
                         if ($isbn && is_numeric($anio)) {
                             $insertStmt->execute([
                                 $info['title'],

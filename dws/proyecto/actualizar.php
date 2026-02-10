@@ -2,16 +2,16 @@
 session_start();
 require "conexion.php";
 
-// Solo admin
+//Solo admin
 if (empty($_SESSION['correo']) || $_SESSION['nombre'] !== 'admin') {
     die("Acceso denegado.");
 }
 
-// Obtener libros para select
+//Obtener libros para select
 $stmtLibros = $conexion->query("SELECT * FROM libros ORDER BY titulo");
 $libros = $stmtLibros->fetchAll(PDO::FETCH_ASSOC);
 
-// Variables para rellenar formulario
+//Variables para rellenar formulario
 $libroSeleccionado = null;
 $mensaje = "";
 
@@ -63,7 +63,7 @@ if (isset($_POST['actualizar'])) {
         }
     }
 
-    // ISBN: solo números, longitud 10 o 13
+    //ISBN: solo números, longitud 10 o 13
     if (!empty($isbn)) {
         if (!ctype_digit($isbn)) {
             $errores[] = "El ISBN solo puede contener NÚMEROS.";
@@ -72,7 +72,7 @@ if (isset($_POST['actualizar'])) {
         }
     }
 
-    // Mostrar errores o actualizar
+    //Mostrar errores o actualizar
     if ($errores) {
         $mensaje = "<ul style='color:red;'>";
         foreach ($errores as $error) {
@@ -112,7 +112,7 @@ if (isset($_POST['actualizar'])) {
         }
     }
 
-    // Volver a cargar datos actualizados
+    //Volver a cargar datos actualizados
     if ($id) {
         $stmt = $conexion->prepare("SELECT * FROM libros WHERE id = ?");
         $stmt->execute([$id]);
@@ -162,7 +162,6 @@ if (isset($_POST['actualizar'])) {
         <?php if ($libroSeleccionado): ?>
 
             <form method="post">
-
                 <input type="hidden" name="id" value="<?= $libroSeleccionado['id'] ?>">
 
                 Título:<br>
@@ -189,9 +188,7 @@ if (isset($_POST['actualizar'])) {
                 <textarea name="descripcion"><?= htmlspecialchars($libroSeleccionado['descripcion']) ?></textarea><br><br>
 
                 <input type="submit" name="actualizar" value="Actualizar libro">
-
             </form>
-
         <?php endif; ?>
     </div>
 
