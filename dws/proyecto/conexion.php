@@ -129,15 +129,15 @@ try {
 
         //Lista de libros conocidos
         $librosConocidos = [
-            "Harry Potter y la piedra filosofal",
-            "El señor de los anillos",
-            "1984 George Orwell",
-            "El corredor del laberinto",
-            "Los juegos del hambre",
-            "Juego de tronos cancion",
-            "Don Quijote de la Mancha",
-            "El gran Gatsby",
-            "La ladrona de libros"
+            "Harry Potter y la piedra filosofal - J.K. Rowling",
+            "El señor de los anillos: La comunidad del anillo - J.R.R. Tolkien",
+            "1984 - George Orwell",
+            "El corredor del laberinto - James Dashner",
+            "Los juegos del hambre - Suzanne Collins",
+            "Juego de tronos - George R.R. Martin",
+            "Don Quijote de la Mancha - Miguel de Cervantes",
+            "El gran Gatsby - F. Scott Fitzgerald",
+            "La ladrona de libros - Markus Zusak"
         ];
 
         $insertStmt = $conexion->prepare(
