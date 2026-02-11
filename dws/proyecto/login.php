@@ -23,10 +23,31 @@ if (isset($_POST['login'])) {
             $_SESSION['usuario_id'] = $usuario['id'];
             $_SESSION['nombre'] = $usuario['nombre'];
             $_SESSION['correo'] = $usuario['correo'];
-
+            // Crear COOKIE con el nombre usuario
             if (isset($_POST['crear'])) {
                 setcookie("usuario_cookie", $usuario['nombre'],time() + 86400, "/");
             }
+
+            // Registrar sesión en la tabla sesiones
+            try {
+                $stmtSesion = $conexion->prepare("INSERT INTO sesiones (nombre_usuario) VALUES (:nombre)");
+                $stmtSesion->bindParam(":nombre", $usuario['nombre']);
+                $stmtSesion->execute();
+            } catch (PDOException $e) {
+                echo "Error al registrar la sesión: " . $e->getMessage();
+            }
+
+            // Contar todas las sesiones registradas en la tabla
+            try {
+                $stmtCount = $conexion->query("SELECT COUNT(*) FROM sesiones");
+                $totalSesiones = $stmtCount->fetchColumn();
+            } catch (PDOException $e) {
+                $totalSesiones = 0;
+            }
+
+            // Cookie con la cantidad total de sesiones
+            setcookie("contador_sesiones", $totalSesiones, time() + 86400, "/");
+
 
             header("Location: index.php");
             exit;

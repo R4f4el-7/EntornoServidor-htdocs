@@ -107,6 +107,18 @@ try {
 } catch (PDOException $e) {
     die("No se puede crear la tabla: " . $e->getMessage());
 }
+//Tabla sesiones
+try {
+    $sqlTable = "CREATE TABLE IF NOT EXISTS sesiones (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        nombre_usuario VARCHAR(100),
+        fecha_inicio TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )";
+    $conexion->exec($sqlTable);
+} catch (PDOException $e) {
+    die("No se puede crear la tabla sesiones: " . $e->getMessage());
+}
+
 //api googles books
 try {
     // Verificar si la tabla libros está vacía
