@@ -121,8 +121,6 @@ if (isset($_POST['actualizar'])) {
 }
 ?>
 
-?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>

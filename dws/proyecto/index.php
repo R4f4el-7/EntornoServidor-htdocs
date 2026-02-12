@@ -7,10 +7,10 @@ if(isset($_POST["iniciar"])){
 
 if($opcion >= 1 && $opcion <= 6){
     switch($opcion){
-        case 1: header("Location: insertar.php"); break;
-        case 2: header("Location: actualizar.php"); break;
-        case 3: header("Location: eliminar.php"); break;
-        case 4: header("Location: consulta.php"); break;
+        case 1: header("Location: CRUD_insertar.php"); break;
+        case 2: header("Location: CRUD_actualizar.php"); break;
+        case 3: header("Location: CRUD_eliminar.php"); break;
+        case 4: header("Location: CRUD_consulta.php"); break;
     }
     exit;
 } else {
