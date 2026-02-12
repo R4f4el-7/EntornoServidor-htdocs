@@ -5,7 +5,7 @@ require "conexion.php";
 if(isset($_POST["iniciar"])){
     $opcion = intval($_POST["opcion"]);//convierte cualquier valor a un número entero.Si el valor no es numérico, devuelve 0.
 
-if($opcion >= 1 && $opcion <= 6){
+if($opcion >= 1 && $opcion <= 4){
     switch($opcion){
         case 1: header("Location: CRUD_insertar.php"); break;
         case 2: header("Location: CRUD_actualizar.php"); break;
@@ -62,6 +62,5 @@ if($opcion >= 1 && $opcion <= 6){
         <a href="registro.php">Registrarse</a><br>
     <?php endif; ?>
 
-    
 </body>
 </html>

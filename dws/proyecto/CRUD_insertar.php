@@ -2,7 +2,7 @@
 session_start();
 require "conexion.php";
 
-// Solo admin
+//Solo admin
 if (empty($_SESSION['correo']) || $_SESSION['nombre'] !== 'admin') {
     die("Acceso denegado");
 }
@@ -12,7 +12,7 @@ $mensajeExito = "";
 
 if (isset($_POST['guardar'])) {
 
-    //Limpiar datos
+    //Limpiar datos(eliminamos los espacios al principio y al final)
     $titulo = trim($_POST['titulo']);
     $autor = trim($_POST['autor']);
     $editorial = trim($_POST['editorial']);
@@ -88,7 +88,7 @@ if (isset($_POST['guardar'])) {
        GUARDAR EN BASE DE DATOS
        =============================== */
     if (empty($errores)) {
-        // Mover imagen solo si todo es válido
+        //Subir imagen solo si todo es válido
         if ($imagenValida) {
             move_uploaded_file($tmp, $rutaImagen);
         }
@@ -140,7 +140,7 @@ if (isset($_POST['guardar'])) {
         <div><?= $mensajeExito ?></div>
     <?php endif; ?>
 
-    <form action="insertar.php" method="post" enctype="multipart/form-data">
+    <form action="" method="post" enctype="multipart/form-data">
         Título:<br>
         <input type="text" name="titulo" required><br>
 

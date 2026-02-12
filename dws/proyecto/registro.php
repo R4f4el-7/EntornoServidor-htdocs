@@ -48,7 +48,7 @@ if (isset($_POST["registrar"])) {
         $errores[] = "El teléfono debe tener exactamente 9 números.";
     }
 
-    //Password
+    //Contraseña
     if ($password === "") {
         $errores[] = "La contraseña es obligatoria.";
     } elseif (strlen($password) < 6) {
@@ -71,7 +71,7 @@ if (isset($_POST["registrar"])) {
         }
     }
 
-    //=====INSERTAR=====
+    //INSERTAR en la tabla usuarios
     if (empty($errores)) {
 
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
