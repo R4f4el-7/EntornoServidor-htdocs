@@ -1,0 +1,6 @@
+//El usuario administrador se crea junto con las tablas
+usuario:admin
+contraseña:1234
+//El usuario Rafael fue registrado
+usuario:rafael
+contraseña:123456
