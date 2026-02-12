@@ -51,6 +51,8 @@ if (isset($_POST['guardar'])) {
 
     //Imagen (opcional)
     $rutaImagen = null;
+    $imagenValida = false;
+
     if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === 0) {
 
         $permitidos = ['jpg','jpeg','png','webp'];
@@ -59,26 +61,37 @@ if (isset($_POST['guardar'])) {
         $tmp = $_FILES['imagen']['tmp_name'];
         $extension = strtolower(pathinfo($nombreImagen, PATHINFO_EXTENSION));
 
+        //Validaciones
         if (!in_array($extension, $permitidos)) {
-            $errores[] = "Formato de imagen NO permitido. Solo se permiten: jpg, jpeg, png, webp.";
+            $errores[] = "Formato de imagen NO permitido. Solo: jpg, jpeg, png, webp.";
         }
 
-        if ($tamano > 2*1024*1024) {
-            $errores[] = "La imagen es demasiado grande. Máximo permitido: 2MB.";
+        if ($tamano > 2 * 1024 * 1024) {
+            $errores[] = "La imagen es demasiado grande. Máximo: 2MB.";
         }
 
-        //Guardar imagen
-        $carpeta = "img/";
-        if (!is_dir($carpeta)) mkdir($carpeta, 0777, true);
-        $nuevoNombre = uniqid("libro_") . "." . $extension;
-        $rutaImagen = $carpeta . $nuevoNombre;
-        move_uploaded_file($tmp, $rutaImagen);
+        //Si pasa validaciones, marcamos como lista para guardar
+        if (empty($errores)) {
+            $imagenValida = true;
+            $carpeta = "img/";
+
+            if (!is_dir($carpeta)) {
+                mkdir($carpeta, 0777, true);
+            }
+
+            $nuevoNombre = uniqid("libro_") . "." . $extension;
+            $rutaImagen = $carpeta . $nuevoNombre;
+        }
     }
 
     /* ===============================
        GUARDAR EN BASE DE DATOS
        =============================== */
     if (empty($errores)) {
+        // Mover imagen solo si todo es válido
+        if ($imagenValida) {
+            move_uploaded_file($tmp, $rutaImagen);
+        }
         $sql = "INSERT INTO libros 
                 (titulo, autor, editorial, anio_publicacion, isbn, descripcion, imagen)
                 VALUES (:titulo, :autor, :editorial, :anio, :isbn, :descripcion, :imagen)";
@@ -124,7 +137,7 @@ if (isset($_POST['guardar'])) {
     <?php endif; ?>
 
     <?php if ($mensajeExito) : ?>
-        <div style="color:green;"><?= $mensajeExito ?></div>
+        <div><?= $mensajeExito ?></div>
     <?php endif; ?>
 
     <form action="insertar.php" method="post" enctype="multipart/form-data">

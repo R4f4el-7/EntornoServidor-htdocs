@@ -113,43 +113,43 @@ require "registro_funciones.php";
     <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
+    <div class="cuadroRetro">
+        <h2>Registro</h2>
+        
+        <?php if (!empty($mensaje)) echo "<p>$mensaje</p>"; ?>
+        <form method="post">
 
-<h2>Registro</h2>
+            Nombre:<br>
+            <input type="text" name="nombre" required><br>
 
-<?php if (!empty($mensaje)) echo "<p>$mensaje</p>"; ?>
+            Primer apellido:<br>
+            <input type="text" name="apellido1" required><br>
 
-<form method="post">
+            Segundo apellido:<br>
+            <input type="text" name="apellido2"><br>
 
-    Nombre:<br>
-    <input type="text" name="nombre" required><br>
+            Teléfono:<br>
+            <input type="text" name="telefono"><br>
 
-    Primer apellido:<br>
-    <input type="text" name="apellido1" required><br>
+            Correo:<br>
+            <input type="email" name="correo" required><br>
 
-    Segundo apellido:<br>
-    <input type="text" name="apellido2"><br>
+            Contraseña:<br>
+            <input type="password" name="password" required><br>
 
-    Teléfono:<br>
-    <input type="text" name="telefono"><br>
+            <label>
+                <input type="checkbox" name="crear" required>
+                Acepto la política de privacidad
+            </label>
 
-    Correo:<br>
-    <input type="email" name="correo" required><br>
+            <br><br>
 
-    Contraseña:<br>
-    <input type="password" name="password" required><br>
+            <input type="submit" value="Registrarse" name="registrar">
 
-    <label>
-        <input type="checkbox" name="crear" required>
-        Acepto la política de privacidad
-    </label>
+        </form>
+    </div>
 
-    <br><br>
-
-    <input type="submit" value="Registrarse" name="registrar">
-
-</form>
-
-<a href="index.php">Ir a inicio</a>
+    <a href="index.php">Ir a inicio</a>
 
 </body>
 </html>
